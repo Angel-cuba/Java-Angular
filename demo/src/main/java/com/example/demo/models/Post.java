@@ -19,7 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Post {
     @Id
-    private ObjectId id;
+    private String id;
     private String title;
     private String body;
     private String authorId;

@@ -20,6 +20,11 @@ public class PostController {
         return "Hello World";
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<Map<String, Object>> getAllPosts() {
+        return postService.getAllPosts();
+    }
+
     @PostMapping("/create")
     public ResponseEntity<Map<String, Object>> createPost(@RequestBody Post post) {
         return postService.createPost(post);

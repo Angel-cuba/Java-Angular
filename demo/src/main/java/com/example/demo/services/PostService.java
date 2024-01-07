@@ -25,6 +25,10 @@ public class PostService {
         return post.getTitle() != null && !post.getTitle().isEmpty() && post.getBody() != null && !post.getBody().isEmpty() && post.getAuthorId() != null && !post.getAuthorId().isEmpty() && post.getImage() != null && !post.getImage().isEmpty();
     }
 
+    public ResponseEntity<Map<String, Object>> getAllPosts() {
+        return helpers.responseWithData("Posts retrieved successfully", HttpStatus.OK, postRepository.findAll());
+    }
+
     public ResponseEntity<Map<String, Object>> createPost(@RequestBody Post post) {
         if (!isPostValid(post)) {
             return helpers.response("Invalid post", HttpStatus.BAD_REQUEST);
