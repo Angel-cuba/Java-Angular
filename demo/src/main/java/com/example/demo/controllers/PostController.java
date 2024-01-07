@@ -35,4 +35,9 @@ public class PostController {
     public ResponseEntity<Map<String, Object>> createPost(@RequestBody Post post) {
         return postService.createPost(post);
     }
+
+    @PutMapping("/{id}/update/{userId}")
+    public ResponseEntity<Map<String, Object>> updatePost(@PathVariable ObjectId id, @PathVariable String userId, @RequestBody Post post) {
+        return postService.updatePost(id, userId, post);
+    }
 }

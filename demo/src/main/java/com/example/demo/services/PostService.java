@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class PostService {
@@ -24,7 +25,11 @@ public class PostService {
     private Helpers helpers;
 
     private boolean isPostValid(Post post) {
-        return post.getTitle() != null && !post.getTitle().isEmpty() && post.getBody() != null && !post.getBody().isEmpty() && post.getAuthorId() != null && !post.getAuthorId().isEmpty() && post.getImage() != null && !post.getImage().isEmpty();
+        return post.getTitle() == null || post.getTitle().isEmpty() || post.getBody() == null || post.getBody().isEmpty() || post.getAuthorId() == null || post.getAuthorId().isEmpty() || post.getImage() == null || post.getImage().isEmpty();
+    }
+
+    private boolean isPostValidForUpdate(Post post) {
+        return post.getTitle() == null || post.getTitle().isEmpty() || post.getBody() == null || post.getBody().isEmpty() || post.getImage() == null || post.getImage().isEmpty();
     }
 
     public ResponseEntity<Map<String, Object>> getAllPosts() {
@@ -39,7 +44,7 @@ public class PostService {
     }
 
     public ResponseEntity<Map<String, Object>> createPost(@RequestBody Post post) {
-        if (!isPostValid(post)) {
+        if (isPostValid(post)) {
             return helpers.response("Invalid post", HttpStatus.BAD_REQUEST);
         }
         post.setTitle(post.getTitle());
@@ -52,5 +57,32 @@ public class PostService {
         post.setCreatedAt(LocalDateTime.now());
         postRepository.save(post);
         return helpers.responseWithData("Post created successfully", HttpStatus.CREATED, post.getId());
+    }
+
+    public ResponseEntity<Map<String, Object>> updatePost(@PathVariable ObjectId id, @PathVariable String userId, @RequestBody Post post) {
+        Optional<Post> postToUpdate = postRepository.findById(id);
+        String authorId = "";
+
+        if (!postRepository.existsById(id)) {
+            return helpers.response("Post not found", HttpStatus.NOT_FOUND);
+        }
+        if (isPostValidForUpdate(post)) {
+            return helpers.response("Invalid post", HttpStatus.BAD_REQUEST);
+        }
+        if (postToUpdate.isPresent()) {
+            authorId = postToUpdate.get().getAuthorId();
+        }
+        if(!userId.equals(authorId)) {
+            return helpers.response("You are not authorized to update this post", HttpStatus.UNAUTHORIZED);
+        }
+
+        Post updatedPost = postToUpdate.get();
+        updatedPost.setTitle(post.getTitle());
+        updatedPost.setBody(post.getBody());
+        updatedPost.setImage(post.getImage());
+        updatedPost.setTags(post.getTags());
+        updatedPost.setUpdatedAt(LocalDateTime.now());
+        postRepository.save(updatedPost);
+        return helpers.responseWithData("Post updated successfully", HttpStatus.OK, updatedPost);
     }
 }
