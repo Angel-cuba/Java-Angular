@@ -32,6 +32,9 @@ public class PostService {
     }
 
     public ResponseEntity<Map<String, Object>> getPostById(@PathVariable ObjectId id) {
+        if(!postRepository.existsById(id)) {
+            return helpers.response("Post not found", HttpStatus.NOT_FOUND);
+        }
         return helpers.responseWithData("Post retrieved successfully", HttpStatus.OK, postRepository.findById(id));
     }
 
