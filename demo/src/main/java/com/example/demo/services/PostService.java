@@ -21,7 +21,14 @@ public class PostService {
     @Autowired
     private Helpers helpers;
 
+    private boolean isPostValid(Post post) {
+        return post.getTitle() != null && !post.getTitle().isEmpty() && post.getBody() != null && !post.getBody().isEmpty() && post.getAuthorId() != null && !post.getAuthorId().isEmpty() && post.getImage() != null && !post.getImage().isEmpty();
+    }
+
     public ResponseEntity<Map<String, Object>> createPost(@RequestBody Post post) {
+        if (!isPostValid(post)) {
+            return helpers.response("Invalid post", HttpStatus.BAD_REQUEST);
+        }
         post.setTitle(post.getTitle());
         post.setBody(post.getBody());
         post.setAuthorId(post.getAuthorId());
