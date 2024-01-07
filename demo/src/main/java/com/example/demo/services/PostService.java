@@ -3,10 +3,12 @@ package com.example.demo.services;
 import com.example.demo.models.Post;
 import com.example.demo.repository.PostRepository;
 import com.example.demo.utils.Helpers;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
@@ -27,6 +29,10 @@ public class PostService {
 
     public ResponseEntity<Map<String, Object>> getAllPosts() {
         return helpers.responseWithData("Posts retrieved successfully", HttpStatus.OK, postRepository.findAll());
+    }
+
+    public ResponseEntity<Map<String, Object>> getPostById(@PathVariable ObjectId id) {
+        return helpers.responseWithData("Post retrieved successfully", HttpStatus.OK, postRepository.findById(id));
     }
 
     public ResponseEntity<Map<String, Object>> createPost(@RequestBody Post post) {

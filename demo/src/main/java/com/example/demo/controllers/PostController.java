@@ -2,6 +2,7 @@ package com.example.demo.controllers;
 
 import com.example.demo.models.Post;
 import com.example.demo.services.PostService;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,11 @@ public class PostController {
     @GetMapping("/all")
     public ResponseEntity<Map<String, Object>> getAllPosts() {
         return postService.getAllPosts();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Map<String, Object>> getPostById(@PathVariable ObjectId id) {
+        return postService.getPostById(id);
     }
 
     @PostMapping("/create")
