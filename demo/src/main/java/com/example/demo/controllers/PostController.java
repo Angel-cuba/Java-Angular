@@ -1,7 +1,7 @@
 package com.example.demo.controllers;
 
-import com.example.demo.models.dtos.PostRequest;
-import com.example.demo.models.dtos.PostUpdateRequest;
+import com.example.demo.models.dto.Posts.PostRequest;
+import com.example.demo.models.dto.Posts.PostUpdateRequest;
 import com.example.demo.services.PostService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
