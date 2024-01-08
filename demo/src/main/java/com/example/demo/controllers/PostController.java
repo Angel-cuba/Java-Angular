@@ -1,6 +1,7 @@
 package com.example.demo.controllers;
 
-import com.example.demo.models.Post;
+import com.example.demo.models.dtos.PostRequest;
+import com.example.demo.models.dtos.PostUpdateRequest;
 import com.example.demo.services.PostService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +14,12 @@ import java.util.Map;
 @RequestMapping("/posts")
 public class PostController {
 
-    @Autowired
-    private PostService postService;
 
-    @GetMapping("/test")
-    public String test() {
-        return "Hello World";
+    private final PostService postService;
+
+    @Autowired
+    public PostController(PostService postService) {
+        this.postService = postService;
     }
 
     @GetMapping("/all")
@@ -32,12 +33,17 @@ public class PostController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Map<String, Object>> createPost(@RequestBody Post post) {
+    public ResponseEntity<Map<String, Object>> createPost(@RequestBody PostRequest post) {
         return postService.createPost(post);
     }
 
     @PutMapping("/{id}/update/{userId}")
-    public ResponseEntity<Map<String, Object>> updatePost(@PathVariable ObjectId id, @PathVariable String userId, @RequestBody Post post) {
+    public ResponseEntity<Map<String, Object>> updatePost(@PathVariable ObjectId id, @PathVariable String userId, @RequestBody PostUpdateRequest post) {
         return postService.updatePost(id, userId, post);
+    }
+
+    @DeleteMapping("/{id}/delete/{userId}")
+    public ResponseEntity<Map<String, Object>> deletePost(@PathVariable ObjectId id, @PathVariable String userId) {
+        return postService.deletePost(id, userId);
     }
 }
