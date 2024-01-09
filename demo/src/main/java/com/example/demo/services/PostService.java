@@ -45,7 +45,7 @@ public class PostService {
     }
 
     public ResponseEntity<Map<String, Object>> getPostById(@PathVariable ObjectId id) {
-        if(!postRepository.existsById(id)) {
+        if (!postRepository.existsById(id)) {
             return helpers.response(notFound, HttpStatus.NOT_FOUND);
         }
         return helpers.responseWithData("Post retrieved successfully", HttpStatus.OK, postRepository.findById(id));
@@ -80,7 +80,7 @@ public class PostService {
         }
 
         authorId = postToUpdate.get().getAuthorId();
-        if(!userId.equals(authorId)) {
+        if (!userId.equals(authorId)) {
             return helpers.response("You are not authorized to update this post", HttpStatus.UNAUTHORIZED);
         }
 
@@ -104,7 +104,7 @@ public class PostService {
         if (postToDelete.isPresent()) {
             authorId = postToDelete.get().getAuthorId();
         }
-        if(!userId.equals(authorId)) {
+        if (!userId.equals(authorId)) {
             return helpers.response("You are not authorized to delete this post", HttpStatus.UNAUTHORIZED);
         }
 
