@@ -27,4 +27,9 @@ public class ReviewController {
     public ResponseEntity<Map<String, Object>> updateReview(@PathVariable ObjectId postId, @RequestBody ReviewRequest review,@PathVariable String reviewId , @PathVariable String userId) {
         return reviewService.updateReview(postId, review, reviewId, userId);
     }
+
+    @DeleteMapping("/{postId}/delete/{reviewId}/{userId}")
+    public ResponseEntity<Map<String, Object>> deleteReview(@PathVariable ObjectId postId, @PathVariable String reviewId, @PathVariable String userId) {
+        return reviewService.deleteReview(postId, reviewId, userId);
+    }
 }

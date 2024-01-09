@@ -41,6 +41,7 @@ public class ReviewService {
     }
 
     String notFound = "Review not found";
+    String revId = "reviewIds";
 
     public ResponseEntity<Map<String, Object>> getAllReviews() {
         return helpers.responseWithData("Reviews retrieved successfully", HttpStatus.OK, reviewRepository.findAll());
@@ -59,7 +60,7 @@ public class ReviewService {
         Review review = reviewRepository.insert(newReview);
         mongoTemplate.update(Post.class)
                 .matching(Criteria.where("_id").is(id))
-                .apply((new Update().push("reviewIds", review.getId()))
+                .apply((new Update().push(revId, review.getId()))
                 ).first();
         return helpers.responseWithData("Review created successfully", HttpStatus.CREATED, review);
     }
@@ -84,16 +85,29 @@ public class ReviewService {
 
     }
 
-    public ResponseEntity<Map<String, Object>> deleteReview(@PathVariable ObjectId reviewId, @PathVariable String author) {
-        Optional<Review> review = reviewRepository.findById(reviewId);
-        if (review.isEmpty()) {
+    public ResponseEntity<Map<String, Object>> deleteReview(@PathVariable ObjectId postId, @PathVariable String reviewId, @PathVariable String userId) {
+        Optional<Post> post = postRepository.findById(postId);
+        if (post.isEmpty()) {
+            return helpers.response("Post not found", HttpStatus.NOT_FOUND);
+        }
+        Optional<Review> reviewToDelete = reviewRepository.findById(new ObjectId(reviewId));
+        if (reviewToDelete.isEmpty()) {
             return helpers.response(notFound, HttpStatus.NOT_FOUND);
         }
-        if (!review.get().getAuthorId().equals(author)) {
+        if (!reviewToDelete.get().getAuthorId().equals(userId)) {
             return helpers.response("You are not authorized to delete this review", HttpStatus.UNAUTHORIZED);
         }
-        reviewRepository.deleteById(reviewId);
-        return helpers.response("Review deleted successfully", HttpStatus.OK);
+        mongoTemplate.update(Post.class)
+                .matching(Criteria.where("_id").is(postId))
+                .apply((new Update().pull(revId, reviewId))
+                ).first();
 
+        reviewRepository.deleteById(new ObjectId(reviewId));
+
+        mongoTemplate.update(Post.class)
+                .matching(Criteria.where("_id").is(postId))
+                .apply((new Update().pull(revId, reviewId))
+                ).first();
+        return helpers.response("Review deleted successfully", HttpStatus.OK);
     }
 }
