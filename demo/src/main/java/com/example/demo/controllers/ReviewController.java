@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/v1/reviews")
 public class ReviewController {
@@ -18,6 +19,11 @@ public class ReviewController {
         this.reviewService = reviewService;
     }
 
+
+    @GetMapping("/all/{postId}")
+    public ResponseEntity<Map<String, Object>> getAllReviewByPost(@PathVariable ObjectId postId) {
+        return reviewService.getAllReviewByPostId(postId);
+    }
     @PostMapping("/create/{id}")
     public ResponseEntity<Map<String, Object>> createReview(@RequestBody ReviewRequest reviewBody, @PathVariable ObjectId id) {
         return reviewService.createReview(reviewBody, id);
