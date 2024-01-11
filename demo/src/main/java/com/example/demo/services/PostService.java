@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -23,7 +24,6 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final Helpers helpers;
-
     @Autowired
     public PostService(PostRepository postRepository, Helpers helpers) {
         this.postRepository = postRepository;
@@ -41,7 +41,8 @@ public class PostService {
     }
 
     public ResponseEntity<Map<String, Object>> getAllPosts() {
-        return helpers.responseWithData("Posts retrieved successfully", HttpStatus.OK, postRepository.findAll());
+        List<Post> posts = postRepository.findAll();
+        return helpers.responseWithData("Posts retrieved successfully", HttpStatus.OK, posts);
     }
 
     public ResponseEntity<Map<String, Object>> getPostById(@PathVariable ObjectId id) {
