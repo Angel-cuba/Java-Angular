@@ -1,8 +1,8 @@
 package com.example.demo.services;
 
 import com.example.demo.models.Post;
-import com.example.demo.models.dto.Posts.PostRequest;
-import com.example.demo.models.dto.Posts.PostUpdateRequest;
+import com.example.demo.models.dto.posts.PostRequest;
+import com.example.demo.models.dto.posts.PostUpdateRequest;
 import com.example.demo.repository.PostRepository;
 import com.example.demo.utils.Helpers;
 import org.bson.types.ObjectId;

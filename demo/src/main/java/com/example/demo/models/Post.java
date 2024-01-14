@@ -7,7 +7,6 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,8 +24,7 @@ public class Post {
     private String image;
     private List<String> tags;
     private List<String> likes;
-    @DocumentReference
-    private List<Review> reviewIds;
+    private List<String> reviewIds;
     @CreatedDate
     private LocalDateTime createdAt;
     @LastModifiedDate

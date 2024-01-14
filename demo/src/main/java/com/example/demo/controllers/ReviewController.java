@@ -1,6 +1,6 @@
 package com.example.demo.controllers;
 
-import com.example.demo.models.dto.Reviews.ReviewRequest;
+import com.example.demo.models.dto.reviews.ReviewRequest;
 import com.example.demo.services.ReviewService;
 import org.bson.types.ObjectId;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +21,8 @@ public class ReviewController {
 
 
     @GetMapping("/all/{postId}")
-    public ResponseEntity<Map<String, Object>> getAllReviewByPost(@PathVariable ObjectId postId) {
-        return reviewService.getAllReviewByPostId(postId);
+    public ResponseEntity<Map<String, Object>> getAllReviewsByPost(@PathVariable ObjectId postId) {
+        return reviewService.getAllReviewsByPostId(postId);
     }
     @PostMapping("/create/{id}")
     public ResponseEntity<Map<String, Object>> createReview(@RequestBody ReviewRequest reviewBody, @PathVariable ObjectId id) {

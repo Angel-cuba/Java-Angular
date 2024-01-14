@@ -95,3 +95,11 @@ Z
 *demo/.mvn/wrapper/maven-wrapper.properties,3\4\349d3063fe1162c53fd4f6394d4828dec2c9f709
 m
 =demo/src/test/java/com/example/demo/DemoApplicationTests.java,a\6\a6850b6808e4fe1d7176852192046945dc099721
+u
+Edemo/src/main/java/com/example/demo/models/dto/posts/PostRequest.java,9\9\99e02064e2f3df7b21adf2b684b0156231e76f5f
+{
+Kdemo/src/main/java/com/example/demo/models/dto/posts/PostUpdateRequest.java,d\8\d8aa27f84c9ece06827c30bbaec883603d162d72
+z
+Jdemo/src/main/java/com/example/demo/models/dto/reviews/ReviewResponse.java,5\4\5457fc88729d230041daa227af7bb81eb65b0b4f
+y
+Idemo/src/main/java/com/example/demo/models/dto/reviews/ReviewRequest.java,c\a\cadf6b7cb4d86f4a0f39574a8ec0352d126332c5

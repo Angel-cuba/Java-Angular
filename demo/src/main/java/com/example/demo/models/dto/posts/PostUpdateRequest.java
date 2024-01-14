@@ -1,4 +1,4 @@
-package com.example.demo.models.dto.Posts;
+package com.example.demo.models.dto.posts;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

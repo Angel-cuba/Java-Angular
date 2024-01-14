@@ -1,6 +1,5 @@
-package com.example.demo.models.dto.Posts;
+package com.example.demo.models.dto.posts;
 
-import com.example.demo.models.Review;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,6 +18,6 @@ public class PostRequest {
     private String image;
     private List<String> tags;
     private List<String> likes;
-    private List<Review> reviewIds;
+    private List<String> reviewIds;
     private LocalDateTime createdAt;
 }

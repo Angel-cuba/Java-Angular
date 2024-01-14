@@ -2,8 +2,8 @@ package com.example.demo.services;
 
 import com.example.demo.models.Post;
 import com.example.demo.models.Review;
-import com.example.demo.models.dto.Reviews.ReviewRequest;
-import com.example.demo.models.dto.Reviews.ReviewResponse;
+import com.example.demo.models.dto.reviews.ReviewRequest;
+import com.example.demo.models.dto.reviews.ReviewResponse;
 import com.example.demo.repository.PostRepository;
 import com.example.demo.repository.ReviewRepository;
 import com.example.demo.utils.Helpers;
@@ -32,6 +32,15 @@ public class ReviewService {
     private final PostRepository postRepository;
     private final MongoTemplate mongoTemplate;
     private final Helpers helpers;
+    String notFound = "Not found";
+    String revId = "reviewIds";
+
+    public ReviewService(ReviewRepository reviewRepository, PostRepository postRepository, MongoTemplate mongoTemplate, Helpers helpers) {
+        this.reviewRepository = reviewRepository;
+        this.postRepository = postRepository;
+        this.mongoTemplate = mongoTemplate;
+        this.helpers = helpers;
+    }
 
     private Object mapReviewToReviewResponse(Review review) {
         ReviewResponse reviewResponse = new ReviewResponse();
@@ -43,35 +52,30 @@ public class ReviewService {
         return reviewResponse;
     }
 
-    public ReviewService(ReviewRepository reviewRepository, PostRepository postRepository, MongoTemplate mongoTemplate, Helpers helpers) {
-        this.reviewRepository = reviewRepository;
-        this.postRepository = postRepository;
-        this.mongoTemplate = mongoTemplate;
-        this.helpers = helpers;
-    }
-
     private boolean isReviewValid(@NotNull ReviewRequest reviewBody) {
         return reviewBody.getBody() == null || reviewBody.getBody().isEmpty() || reviewBody.getAuthorId() == null || reviewBody.getAuthorId().isEmpty();
     }
 
-    String notFound = "Not found";
-    String revId = "reviewIds";
-
-    public ResponseEntity<Map<String, Object>> getAllReviewByPostId(@PathVariable ObjectId id) {
+    public ResponseEntity<Map<String, Object>> getAllReviewsByPostId(@PathVariable ObjectId id) {
         Optional<Post> post = postRepository.findById(id);
         if (post.isEmpty()) {
             return helpers.response(notFound, HttpStatus.NOT_FOUND);
         }
 
-        List<Review> reviewIds = post.get().getReviewIds();
-        if(reviewIds.isEmpty()){
+        List<String> reviewIds = post.get().getReviewIds();
+        if (reviewIds.isEmpty()) {
             return helpers.response("No reviews found", HttpStatus.NOT_FOUND);
         }
         List<Object> reviews = new ArrayList<>();
-        for (Review reviewId : reviewIds) {
-            Object o = mapReviewToReviewResponse(reviewId);
+        for (String reviewId : reviewIds) {
+            Optional<Review> review = reviewRepository.findById(new ObjectId(reviewId));
+            if (review.isEmpty()) {
+                return helpers.response(notFound, HttpStatus.NOT_FOUND);
+            }
+            Object o = mapReviewToReviewResponse(review.get());
             reviews.add(o);
         }
+
         return helpers.responseWithData("Reviews retrieved successfully", HttpStatus.OK, reviews);
     }
 
@@ -90,7 +94,7 @@ public class ReviewService {
                 .matching(Criteria.where("_id").is(id))
                 .apply((new Update().push(revId, review.getId()))
                 ).first();
-        return helpers.responseWithData("Review created successfully", HttpStatus.CREATED, review);
+        return helpers.responseWithData("Review created successfully", HttpStatus.CREATED, review.getBody());
     }
 
     public ResponseEntity<Map<String, Object>> updateReview(@PathVariable ObjectId postId, @RequestBody ReviewRequest review, @PathVariable String reviewId, @PathVariable String userId) {
@@ -109,8 +113,11 @@ public class ReviewService {
                 .matching(Criteria.where("_id").is(reviewId))
                 .apply((new Update().set("body", review.getBody()).set("updatedAt", LocalDateTime.now()))
                 ).first();
-        return helpers.responseWithData("Review updated successfully", HttpStatus.OK, reviewRepository.findById(new ObjectId(reviewId)));
-
+        Optional<Review> updatedReview = reviewRepository.findById(new ObjectId(reviewId));
+        if (updatedReview.isEmpty()) {
+            return helpers.response(notFound, HttpStatus.NOT_FOUND);
+        }
+        return helpers.responseWithData("Review updated successfully", HttpStatus.OK, updatedReview.get().getBody());
     }
 
     public ResponseEntity<Map<String, Object>> deleteReview(@PathVariable ObjectId postId, @PathVariable String reviewId, @PathVariable String userId) {
