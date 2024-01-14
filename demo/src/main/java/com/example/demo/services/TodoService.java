@@ -1,9 +1,9 @@
 package com.example.demo.services;
 
 import com.example.demo.models.Todo;
-import com.example.demo.models.dto.Todos.TodoCompletedRequest;
-import com.example.demo.models.dto.Todos.TodoRequest;
-import com.example.demo.models.dto.Todos.TodoUpdateRequest;
+import com.example.demo.models.dto.todos.TodoCompletedRequest;
+import com.example.demo.models.dto.todos.TodoRequest;
+import com.example.demo.models.dto.todos.TodoUpdateRequest;
 import com.example.demo.repository.TodoRepository;
 import com.example.demo.utils.Helpers;
 import org.bson.types.ObjectId;

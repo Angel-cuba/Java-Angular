@@ -1,8 +1,8 @@
 package com.example.demo.controllers;
 
-import com.example.demo.models.dto.Todos.TodoCompletedRequest;
-import com.example.demo.models.dto.Todos.TodoRequest;
-import com.example.demo.models.dto.Todos.TodoUpdateRequest;
+import com.example.demo.models.dto.todos.TodoCompletedRequest;
+import com.example.demo.models.dto.todos.TodoRequest;
+import com.example.demo.models.dto.todos.TodoUpdateRequest;
 import com.example.demo.services.TodoService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/todos")
+@RequestMapping("/api/v1/todos")
 public class TodoController {
 
     private final TodoService todoService;
