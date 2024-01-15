@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -61,9 +62,9 @@ public class PostService {
         post.setBody(postRequest.getBody());
         post.setAuthorId(postRequest.getAuthorId());
         post.setImage(postRequest.getImage());
-        post.setTags(postRequest.getTags());
-        post.setLikes(postRequest.getLikes());
-        post.setReviewIds(postRequest.getReviewIds());
+        post.setTags(postRequest.getTags() != null ? postRequest.getTags() : new ArrayList<>());
+        post.setLikes(postRequest.getLikes() != null ? postRequest.getLikes() : new ArrayList<>());
+        post.setReviewIds(postRequest.getReviewIds() != null ? postRequest.getReviewIds() : new ArrayList<>());
         post.setCreatedAt(LocalDateTime.now());
         Post savedPost = postRepository.save(post);
         return helpers.responseWithData("Post created successfully", HttpStatus.CREATED, savedPost.getId());
@@ -89,7 +90,9 @@ public class PostService {
         updatedPost.setTitle(post.getTitle());
         updatedPost.setBody(post.getBody());
         updatedPost.setImage(post.getImage());
-        updatedPost.setTags(post.getTags());
+        updatedPost.setTags(post.getTags() != null ? post.getTags() : new ArrayList<>());
+        updatedPost.setLikes(post.getLikes() != null ? post.getLikes() : new ArrayList<>());
+        updatedPost.setReviewIds(post.getReviewIds() != null ? post.getReviewIds() : new ArrayList<>());
         updatedPost.setUpdatedAt(LocalDateTime.now());
         postRepository.save(updatedPost);
         return helpers.responseWithData("Post updated successfully", HttpStatus.OK, updatedPost);

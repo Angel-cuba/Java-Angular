@@ -64,7 +64,7 @@ public class ReviewService {
 
         List<String> reviewIds = post.get().getReviewIds();
         if (reviewIds.isEmpty()) {
-            return helpers.response("No reviews found", HttpStatus.NOT_FOUND);
+            return helpers.response("No reviews found", HttpStatus.OK);
         }
         List<Object> reviews = new ArrayList<>();
         for (String reviewId : reviewIds) {

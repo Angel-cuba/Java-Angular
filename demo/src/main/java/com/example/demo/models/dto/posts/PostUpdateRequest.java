@@ -15,5 +15,7 @@ public class PostUpdateRequest {
     private String body;
     private String image;
     private List<String> tags;
+    private List<String> likes;
+    private List<String> reviewIds;
     private LocalDateTime updatedAt;
 }
