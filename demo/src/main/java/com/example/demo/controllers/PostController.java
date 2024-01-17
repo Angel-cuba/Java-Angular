@@ -15,7 +15,6 @@ import java.util.Map;
 @RequestMapping("/api/v1/posts")
 public class PostController {
 
-
     private final PostService postService;
 
     @Autowired
@@ -33,14 +32,19 @@ public class PostController {
         return postService.getPostById(id);
     }
 
-    @PostMapping("/{postId}/like/{userId}")
-    public ResponseEntity<Map<String, Object>> likePost(@PathVariable ObjectId postId, @PathVariable String userId) {
-        return postService.likePost(postId, userId);
+    @GetMapping("/author/{authorId}")
+    public ResponseEntity<Map<String, Object>> getPostsByAuthorId(@PathVariable String authorId) {
+        return postService.getPostsByAuthorId(authorId);
     }
 
     @PostMapping("/create")
     public ResponseEntity<Map<String, Object>> createPost(@RequestBody PostRequest post) {
         return postService.createPost(post);
+    }
+
+    @PostMapping("/{postId}/like/{userId}")
+    public ResponseEntity<Map<String, Object>> likePost(@PathVariable ObjectId postId, @PathVariable String userId) {
+        return postService.likePost(postId, userId);
     }
 
     @PutMapping("/{id}/update/{userId}")

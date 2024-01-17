@@ -53,6 +53,14 @@ public class PostService {
         return helpers.responseWithData("Post retrieved successfully", HttpStatus.OK, postRepository.findById(id));
     }
 
+    public ResponseEntity<Map<String, Object>> getPostsByAuthorId(@PathVariable String authorId) {
+        List<Post> filteredPosts = postRepository.findByAuthorId(authorId);
+        if (filteredPosts.isEmpty()) {
+            return helpers.response(notFound, HttpStatus.NOT_FOUND);
+        }
+        return helpers.responseWithData("Posts retrieved successfully", HttpStatus.OK, filteredPosts);
+    }
+
     public ResponseEntity<Map<String, Object>> likePost(@PathVariable ObjectId id, @PathVariable String userId) {
         Optional<Post> post = postRepository.findById(id);
         if (post.isEmpty()) {
