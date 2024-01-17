@@ -33,6 +33,11 @@ public class PostController {
         return postService.getPostById(id);
     }
 
+    @PostMapping("/{postId}/like/{userId}")
+    public ResponseEntity<Map<String, Object>> likePost(@PathVariable ObjectId postId, @PathVariable String userId) {
+        return postService.likePost(postId, userId);
+    }
+
     @PostMapping("/create")
     public ResponseEntity<Map<String, Object>> createPost(@RequestBody PostRequest post) {
         return postService.createPost(post);

@@ -53,6 +53,26 @@ public class PostService {
         return helpers.responseWithData("Post retrieved successfully", HttpStatus.OK, postRepository.findById(id));
     }
 
+    public ResponseEntity<Map<String, Object>> likePost(@PathVariable ObjectId id, @PathVariable String userId) {
+        Optional<Post> post = postRepository.findById(id);
+        if (post.isEmpty()) {
+            return helpers.response(notFound, HttpStatus.NOT_FOUND);
+        }
+        Post postToLike = post.get();
+        List<String> likes = postToLike.getLikes();
+        // Check if user has already liked the post and delete the like if they have
+        if (likes.contains(userId)) {
+            likes.remove(userId);
+            postToLike.setLikes(likes);
+            postRepository.save(postToLike);
+            return helpers.responseWithData("Post unliked successfully", HttpStatus.OK, postToLike);
+        }
+        likes.add(userId);
+        postToLike.setLikes(likes);
+        postRepository.save(postToLike);
+        return helpers.responseWithData("Post liked successfully", HttpStatus.OK, postToLike);
+    }
+
     public ResponseEntity<Map<String, Object>> createPost(@RequestBody PostRequest postRequest) {
         if (isPostValid(postRequest)) {
             return helpers.response("Invalid post", HttpStatus.BAD_REQUEST);
