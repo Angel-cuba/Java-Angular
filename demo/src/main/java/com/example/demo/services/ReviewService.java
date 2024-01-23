@@ -79,6 +79,14 @@ public class ReviewService {
         return helpers.responseWithData("Reviews retrieved successfully", HttpStatus.OK, reviews);
     }
 
+    public ResponseEntity<Map<String, Object>> getReviewById(@PathVariable String id) {
+        Optional<Review> review = reviewRepository.findById(new ObjectId(id));
+        if (review.isEmpty()) {
+            return helpers.response(notFound, HttpStatus.NOT_FOUND);
+        }
+        return helpers.responseWithData("Review retrieved successfully", HttpStatus.OK, review);
+    }
+
     public ResponseEntity<Map<String, Object>> createReview(@RequestBody ReviewRequest reviewBody, @PathVariable ObjectId id) {
         if (isReviewValid(reviewBody)) {
             return helpers.response("Invalid review", HttpStatus.BAD_REQUEST);
