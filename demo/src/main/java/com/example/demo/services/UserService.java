@@ -6,6 +6,7 @@ import com.example.demo.models.dto.user.UserUpdateRequest;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.utils.Helpers;
 import org.bson.types.ObjectId;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,24 +29,41 @@ public class UserService {
     }
 
     String notFound = "User not found";
+    
+    private boolean isUserValid(UserRequest user) {
+        return user.getEmail() == null || user.getEmail().isEmpty() || user.getUsername() == null || user.getUsername().isEmpty() || user.getPassword() == null || user.getPassword().isEmpty();
+    }
+    
+    private boolean isUserValidForUpdate(UserUpdateRequest user) {
+        return user.getUsername() == null || user.getUsername().isEmpty() || user.getPassword() == null || user.getPassword().isEmpty();
+    }
 
     public ResponseEntity<Map<String, Object>> createUser(@RequestBody UserRequest user) {
         Optional<User> userOptional = userRepository.findByEmail(user.getEmail());
         if (userOptional.isPresent()) {
-            return ResponseEntity.badRequest().body(Map.of("message", "User with email " + user.getEmail() + " already exists"));
+            return helpers.response("Email already exists", HttpStatus.BAD_REQUEST);
+        }
+        if (isUserValid(user)) {
+            return helpers.response("Invalid user details", HttpStatus.BAD_REQUEST);
         }
         // Create a new instance of the User class and set the properties of the user object
+        final User newUser = getUser(user);
+
+        userRepository.save(newUser);
+        return helpers.response("User created successfully", HttpStatus.CREATED);
+    }
+
+    @NotNull
+    private static User getUser(UserRequest user) {
         User newUser = new User();
         newUser.setEmail(user.getEmail());
         newUser.setUsername(user.getUsername());
         newUser.setPassword(user.getPassword());
-        newUser.setImage(user.getImage());
-        newUser.setBio(user.getBio());
-        newUser.setGithub(user.getGithub());
-        newUser.setLinkedin(user.getLinkedin());
-
-        userRepository.save(newUser);
-        return helpers.response("User created successfully", HttpStatus.CREATED);
+        newUser.setImage(user.getImage() != null ? user.getImage() : "");
+        newUser.setBio(user.getBio() != null ? user.getBio() : "");
+        newUser.setGithub(user.getGithub() != null ? user.getGithub() : "");
+        newUser.setLinkedin(user.getLinkedin() != null ? user.getLinkedin() : "");
+        return newUser;
     }
 
     public ResponseEntity<Map<String, Object>> getAllUsers() {
@@ -65,16 +83,20 @@ public class UserService {
         if (userOptional.isEmpty()) {
             return helpers.response(notFound, HttpStatus.NOT_FOUND);
         }
-        User updatedUser = userOptional.get();
-        updatedUser.setUsername(user.getUsername());
-        updatedUser.setPassword(user.getPassword());
-        updatedUser.setImage(user.getImage());
-        updatedUser.setBio(user.getBio());
-        updatedUser.setGithub(user.getGithub());
-        updatedUser.setLinkedin(user.getLinkedin());
 
-        userRepository.save(updatedUser);
-        return helpers.responseWithData("User updated successfully", HttpStatus.OK, updatedUser);
+        if (isUserValidForUpdate(user)) {
+            return helpers.response("Invalid user details", HttpStatus.BAD_REQUEST);
+        }
+
+        User userToUpdate = userOptional.get();
+        userToUpdate.setUsername(user.getUsername());
+        userToUpdate.setPassword(user.getPassword());
+        userToUpdate.setImage(user.getImage() != null ? user.getImage() : "");
+        userToUpdate.setBio(user.getBio() != null ? user.getBio() : "");
+        userToUpdate.setGithub(user.getGithub() != null ? user.getGithub() : "");
+        userToUpdate.setLinkedin(user.getLinkedin() != null ? user.getLinkedin() : "");
+        userRepository.save(userToUpdate);
+        return helpers.responseWithData("User updated successfully", HttpStatus.OK, userToUpdate);
     }
 
     public ResponseEntity<Map<String, Object>> deleteUser(ObjectId id) {
