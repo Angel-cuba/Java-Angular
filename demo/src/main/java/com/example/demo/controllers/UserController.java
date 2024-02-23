@@ -1,5 +1,6 @@
 package com.example.demo.controllers;
 
+import com.example.demo.models.dto.user.UserLoginRequest;
 import com.example.demo.models.dto.user.UserRequest;
 import com.example.demo.models.dto.user.UserUpdateRequest;
 import com.example.demo.services.UserService;
@@ -45,6 +46,11 @@ public class UserController {
     @DeleteMapping("/{id}/delete")
     public ResponseEntity<Map<String, Object>> deleteUser(@PathVariable ObjectId id) {
         return userService.deleteUser(id);
+    }
+
+    @PostMapping("/signing")
+    public ResponseEntity<Map<String, Object>> signIn(@RequestBody UserLoginRequest user) {
+        return userService.signIn(user);
     }
 
 }

@@ -1,15 +1,21 @@
 package com.example.demo.services;
 
+import com.example.demo.models.Roles;
 import com.example.demo.models.User;
+import com.example.demo.models.dto.user.UserLoginRequest;
 import com.example.demo.models.dto.user.UserRequest;
 import com.example.demo.models.dto.user.UserUpdateRequest;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.utils.Helpers;
+import com.example.demo.utils.JwtHelper;
 import org.bson.types.ObjectId;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -22,10 +28,19 @@ public class UserService {
     private final UserRepository userRepository;
     private final Helpers helpers;
 
+    private final PasswordEncoder passwordEncoder;
+
+    private final JwtHelper jwtHelper;
+
+    private AuthenticationManager authenticationManager;
+
     @Autowired
-    public UserService(UserRepository userRepository, Helpers helpers) {
+    public UserService(UserRepository userRepository, Helpers helpers, PasswordEncoder passwordEncoder, JwtHelper jwtHelper, AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
         this.helpers = helpers;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtHelper = jwtHelper;
+        this.authenticationManager = authenticationManager;
     }
 
     String notFound = "User not found";
@@ -47,10 +62,20 @@ public class UserService {
             return helpers.response("Invalid user details", HttpStatus.BAD_REQUEST);
         }
         // Create a new instance of the User class and set the properties of the user object
-        final User newUser = getUser(user);
-
+        User newUser = getUser(user);
+        newUser.setUsername(user.getUsername());
+        newUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        newUser.setEmail(user.getEmail());
+        newUser.setImage(user.getImage() != null ? user.getImage() : "");
+        newUser.setBio(user.getBio() != null ? user.getBio() : "");
+        newUser.setGithub(user.getGithub() != null ? user.getGithub() : "");
+        newUser.setLinkedin(user.getLinkedin() != null ? user.getLinkedin() : "");
+        newUser.setRole(Roles.USER);
+        newUser.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(newUser);
-        return helpers.response("User created successfully", HttpStatus.CREATED);
+
+        String token = jwtHelper.generateToken(newUser);
+        return helpers.responseWithData("User created successfully", HttpStatus.CREATED, token);
     }
 
     @NotNull
@@ -108,5 +133,14 @@ public class UserService {
         return helpers.response("User deleted successfully", HttpStatus.OK);
     }
 
+    public ResponseEntity<Map<String, Object>> signIn(UserLoginRequest user) {
+        User userOptional = userRepository.findByEmail(user.getEmail()).orElseThrow(() -> new RuntimeException("User not found"));
 
+        if (!passwordEncoder.matches(user.getPassword(), userOptional.getPassword())) {
+            return helpers.response("Invalid credentials", HttpStatus.BAD_REQUEST);
+        }
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
+        String token = jwtHelper.generateToken(userOptional);
+        return helpers.responseWithData("User signed in successfully", HttpStatus.OK, token);
+    }
 }
