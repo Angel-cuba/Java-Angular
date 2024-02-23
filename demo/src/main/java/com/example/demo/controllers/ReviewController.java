@@ -28,9 +28,9 @@ public class ReviewController {
     public ResponseEntity<Map<String, Object>> getReviewById(@PathVariable String reviewId) {
         return reviewService.getReviewById(reviewId);
     }
-    @PostMapping("/create/{id}")
-    public ResponseEntity<Map<String, Object>> createReview(@RequestBody ReviewRequest reviewBody, @PathVariable ObjectId id) {
-        return reviewService.createReview(reviewBody, id);
+    @PostMapping("/create/review/{postId}")
+    public ResponseEntity<Map<String, Object>> createReview(@RequestBody ReviewRequest reviewBody, @PathVariable ObjectId postId) {
+        return reviewService.createReview(reviewBody, postId);
     }
 
     @PutMapping("/{postId}/update/{reviewId}/{userId}")

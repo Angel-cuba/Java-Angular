@@ -87,7 +87,7 @@ public class ReviewService {
         return helpers.responseWithData("Review retrieved successfully", HttpStatus.OK, review);
     }
 
-    public ResponseEntity<Map<String, Object>> createReview(@RequestBody ReviewRequest reviewBody, @PathVariable ObjectId id) {
+    public ResponseEntity<Map<String, Object>> createReview(@RequestBody ReviewRequest reviewBody, @PathVariable ObjectId postId) {
         if (isReviewValid(reviewBody)) {
             return helpers.response("Invalid review", HttpStatus.BAD_REQUEST);
         }
@@ -99,7 +99,7 @@ public class ReviewService {
 
         Review review = reviewRepository.insert(newReview);
         mongoTemplate.update(Post.class)
-                .matching(Criteria.where("_id").is(id))
+                .matching(Criteria.where("_id").is(postId))
                 .apply((new Update().push(revId, review.getId()))
                 ).first();
         return helpers.responseWithData("Review created successfully", HttpStatus.CREATED, review.getBody());

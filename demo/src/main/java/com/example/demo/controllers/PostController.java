@@ -27,7 +27,7 @@ public class PostController {
         return postService.getAllPosts();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{postId}")
     public ResponseEntity<Map<String, Object>> getPostById(@PathVariable ObjectId id) {
         return postService.getPostById(id);
     }
@@ -47,12 +47,12 @@ public class PostController {
         return postService.likePost(postId, userId);
     }
 
-    @PutMapping("/{id}/update/{userId}")
+    @PutMapping("/{postId}/update/{userId}")
     public ResponseEntity<Map<String, Object>> updatePost(@PathVariable ObjectId id, @PathVariable String userId, @RequestBody PostUpdateRequest post) {
         return postService.updatePost(id, userId, post);
     }
 
-    @DeleteMapping("/{id}/delete/{userId}")
+    @DeleteMapping("/{postId}/delete/{userId}")
     public ResponseEntity<Map<String, Object>> deletePost(@PathVariable ObjectId id, @PathVariable String userId) {
         return postService.deletePost(id, userId);
     }
