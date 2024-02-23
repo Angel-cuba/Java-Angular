@@ -109,12 +109,8 @@ Edemo/src/main/java/com/example/demo/models/dto/todos/TodoRequest.java,f\1\f1c8
 Kdemo/src/main/java/com/example/demo/models/dto/todos/TodoUpdateRequest.java,c\8\c8a68d74b2c51759c6023323d025aa7ed2c7d756
 ~
 Ndemo/src/main/java/com/example/demo/models/dto/todos/TodoCompletedRequest.java,8\1\8102e431387637e7b37157f7d1cb152542c72e79
-i
-9demo/src/main/java/com/example/demo/utils/JwtService.java,b\8\b82109320ac60755850e0aa92e68593d4c265974
 r
 Bdemo/src/main/java/com/example/demo/repository/UserRepository.java,0\a\0abfda384f52589a4b682728ec42ff118ef60d2d
-q
-Ademo/src/main/java/com/example/demo/repository/UseRepository.java,5\c\5cf1d8fa4c1eded95115834ea1f2fddea593f4fa
 d
 4demo/src/main/java/com/example/demo/models/User.java,7\4\740b256dd23e8846be83cdf6aa6b21b9592f7593
 s
@@ -133,9 +129,11 @@ v
 Fdemo/src/main/java/com/example/demo/SecurityConfig/SecurityConfig.java,8\a\8ab5cb61bc6b5c53572e6673a9fc2d207294d90b
 l
 <demo/src/main/java/com/example/demo/JwtFilter/JwtFilter.java,8\7\872f50ad5ac2947d838523ac8e02a499b768532e
-s
-Cdemo/src/main/java/com/example/demo/SecurityConfig/UserDetails.java,5\8\58312aa00ec38c0528c11ef58f7147f52f63f536
 y
 Idemo/src/main/java/com/example/demo/SecurityConfig/CustomUserDetails.java,9\9\9976042a1594b4d95c00c47404447b5f57f776f7
 v
 Fdemo/src/main/java/com/example/demo/SecurityConfig/securityConfig.java,a\8\a863cf7241ec5fc9cd7f41a2f4364dae90ad422e
+e
+5demo/src/main/java/com/example/demo/models/Roles.java,a\f\afad2b54249f26c9b477edf1471e8d2dff27eaf5
+x
+Hdemo/src/main/java/com/example/demo/SecurityConfig/CustomUserDetail.java,4\e\4ecf8d2119dc89636868f67830e5afac72fd1016
