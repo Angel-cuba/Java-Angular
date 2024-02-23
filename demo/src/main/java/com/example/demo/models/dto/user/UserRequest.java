@@ -16,4 +16,5 @@ public class UserRequest {
     private String linkedin;
     private String github;
     private String bio;
+    private String role;
 }

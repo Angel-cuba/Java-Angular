@@ -20,4 +20,5 @@ public class User {
     private String linkedin;
     private String github;
     private String bio;
+    private Roles role;
 }
