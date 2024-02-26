@@ -28,8 +28,8 @@ public class PostController {
     }
 
     @GetMapping("/{postId}")
-    public ResponseEntity<Map<String, Object>> getPostById(@PathVariable ObjectId id) {
-        return postService.getPostById(id);
+    public ResponseEntity<Map<String, Object>> getPostById(@PathVariable ObjectId postId) {
+        return postService.getPostById(postId);
     }
 
     @GetMapping("/author/{authorId}")

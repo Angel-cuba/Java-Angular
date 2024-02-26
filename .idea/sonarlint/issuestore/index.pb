@@ -137,3 +137,5 @@ e
 5demo/src/main/java/com/example/demo/models/Roles.java,a\f\afad2b54249f26c9b477edf1471e8d2dff27eaf5
 x
 Hdemo/src/main/java/com/example/demo/SecurityConfig/CustomUserDetail.java,4\e\4ecf8d2119dc89636868f67830e5afac72fd1016
+u
+Edemo/src/main/java/com/example/demo/models/dto/user/UserResponse.java,5\a\5a50a4790df8e30625f22c61c166d0b955663a7f
