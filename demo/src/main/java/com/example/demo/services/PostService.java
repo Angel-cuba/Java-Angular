@@ -49,10 +49,14 @@ public class PostService {
     public ResponseEntity<Map<String, Object>> getPostById(@PathVariable ObjectId postId) {
         if (!postRepository.existsById(postId)) {
             return helpers.response(notFound, HttpStatus.NOT_FOUND);
-        } else {
-            Optional<Post> post = postRepository.findById(postId);
-            return helpers.responseWithData("Post retrieved successfully", HttpStatus.OK, post.get());
         }
+        else {
+            Optional<Post> post = postRepository.findById(postId);
+            if (post.isPresent()) {
+                return helpers.responseWithData("Post retrieved successfully", HttpStatus.OK, post.get());
+            }
+        }
+        return helpers.response(notFound, HttpStatus.NOT_FOUND);
     }
 
     public ResponseEntity<Map<String, Object>> getPostsByAuthorId(@PathVariable String authorId) {
