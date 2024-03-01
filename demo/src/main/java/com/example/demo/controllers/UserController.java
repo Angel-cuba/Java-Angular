@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserController {
@@ -48,7 +48,7 @@ public class UserController {
         return userService.deleteUser(id);
     }
 
-    @PostMapping("/signing")
+    @PostMapping("/signin")
     public ResponseEntity<Map<String, Object>> signIn(@RequestBody UserLoginRequest user) {
         return userService.signIn(user);
     }

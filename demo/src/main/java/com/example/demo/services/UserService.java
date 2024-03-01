@@ -4,6 +4,7 @@ import com.example.demo.models.Roles;
 import com.example.demo.models.User;
 import com.example.demo.models.dto.user.UserLoginRequest;
 import com.example.demo.models.dto.user.UserRequest;
+import com.example.demo.models.dto.user.UserResponse;
 import com.example.demo.models.dto.user.UserUpdateRequest;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.utils.Helpers;
@@ -32,7 +33,9 @@ public class UserService {
 
     private final JwtHelper jwtHelper;
 
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
+
+    private static final String notFound = "User not found";
 
     @Autowired
     public UserService(UserRepository userRepository, Helpers helpers, PasswordEncoder passwordEncoder, JwtHelper jwtHelper, AuthenticationManager authenticationManager) {
@@ -43,12 +46,10 @@ public class UserService {
         this.authenticationManager = authenticationManager;
     }
 
-    String notFound = "User not found";
-    
     private boolean isUserValid(UserRequest user) {
         return user.getEmail() == null || user.getEmail().isEmpty() || user.getUsername() == null || user.getUsername().isEmpty() || user.getPassword() == null || user.getPassword().isEmpty();
     }
-    
+
     private boolean isUserValidForUpdate(UserUpdateRequest user) {
         return user.getUsername() == null || user.getUsername().isEmpty() || user.getPassword() == null || user.getPassword().isEmpty();
     }
@@ -134,13 +135,19 @@ public class UserService {
     }
 
     public ResponseEntity<Map<String, Object>> signIn(UserLoginRequest user) {
-        User userOptional = userRepository.findByEmail(user.getEmail()).orElseThrow(() -> new RuntimeException("User not found"));
-
+        User userOptional = userRepository.findByEmail(user.getEmail()).orElseThrow(() -> new RuntimeException(notFound));
         if (!passwordEncoder.matches(user.getPassword(), userOptional.getPassword())) {
             return helpers.response("Invalid credentials", HttpStatus.BAD_REQUEST);
         }
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
         String token = jwtHelper.generateToken(userOptional);
-        return helpers.responseWithData("User signed in successfully", HttpStatus.OK, token);
+        User userdata = userRepository.findByEmail(user.getEmail()).orElseThrow(() -> new RuntimeException(notFound));
+        // Return a response with the token and the user data(Username, Image, Role)
+        UserResponse userData = new UserResponse();
+        userData.setId(userdata.getId());
+        userData.setUsername(userdata.getUsername());
+        userData.setImage(userdata.getImage());
+        userData.setRole(userdata.getRole().name());
+        return helpers.responseWithData("User signed in successfully", HttpStatus.OK, Map.of("token", token, "user", userData));
     }
 }
