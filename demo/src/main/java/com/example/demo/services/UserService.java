@@ -47,7 +47,7 @@ public class UserService {
     }
 
     private boolean isUserValid(UserRequest user) {
-        return user.getEmail() == null || user.getEmail().isEmpty() || user.getUsername() == null || user.getUsername().isEmpty() || user.getPassword() == null || user.getPassword().isEmpty();
+        return user.getEmail() == null || user.getEmail().isEmpty() || user.getPassword() == null || user.getPassword().isEmpty();
     }
 
     private boolean isUserValidForUpdate(UserUpdateRequest user) {
@@ -76,7 +76,14 @@ public class UserService {
         userRepository.save(newUser);
 
         String token = jwtHelper.generateToken(newUser);
-        return helpers.responseWithData("User created successfully", HttpStatus.CREATED, token);
+        User userdata = userRepository.findByEmail(user.getEmail()).orElseThrow(() -> new RuntimeException(notFound));
+        // Return a response with the token and the user data(Username, Image, Role)
+        UserResponse userData = new UserResponse();
+        userData.setId(userdata.getId());
+        userData.setUsername(userdata.getUsername());
+        userData.setImage(userdata.getImage());
+        userData.setRole(userdata.getRole().name());
+        return helpers.responseWithData("User signed in successfully", HttpStatus.OK, Map.of("token", token, "user", userData));
     }
 
     @NotNull
