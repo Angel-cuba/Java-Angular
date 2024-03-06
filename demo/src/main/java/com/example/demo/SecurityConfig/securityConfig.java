@@ -42,30 +42,27 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
          http
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeRequests(authorizeRequests -> authorizeRequests
-                        .requestMatchers(
-                                "/api/v1/users/signin",
-                                "/api/v1/users/create"
-                        )
-                        .permitAll()
-                        //Users
-                        .requestMatchers(HttpMethod.GET, "/api/v1/users/all").hasRole(admin)
-                        .requestMatchers(HttpMethod.GET, "/api/v1/users/user/{userId}").hasAnyRole(admin, user)
-                        .requestMatchers(HttpMethod.PUT, "/api/v1/users/{id}/update").hasAnyRole(admin, user)
-                        .requestMatchers(HttpMethod.DELETE, "/api/v1/users/{id}/delete").hasAnyRole(admin, user)
-                        //Posts
-                        .requestMatchers(HttpMethod.GET, "/api/v1/posts/all", "/api/v1/posts/{postId}", "/api/v1/posts/author/{authorId}").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/v1/posts/create", "/api/v1/posts/{postId}/like/{userId}").hasAnyRole(admin, user)
-                        .requestMatchers(HttpMethod.POST, "/api/v1/{postId}/like/{userId}").hasAnyRole(admin, user)
-                        .requestMatchers(HttpMethod.PUT, "/api/v1/posts/{postId}/update/{userId}").hasAnyRole(admin, user)
-                        .requestMatchers(HttpMethod.DELETE, "/api/v1/posts/{postId}/delete/{userId}").hasAnyRole(admin, user)
-                        //Reviews
-                        .requestMatchers(HttpMethod.GET, "/api/v1/reviews/all/{postId}").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/v1/reviews/review/{reviewId}").hasAnyRole(admin, user)
-                        .requestMatchers(HttpMethod.POST, "/api/v1/reviews/create/review/{postId}").hasAnyRole(admin, user)
-                        .requestMatchers(HttpMethod.PUT, "/api/v1/reviews/{postId}/update/{reviewId}/{userId}").hasAnyRole(admin, user)
-                        .requestMatchers(HttpMethod.DELETE, "/api/v1/reviews/{postId}/delete/{reviewId}/{userId}").hasAnyRole(admin, user)
-                        .anyRequest().authenticated()
+                .authorizeHttpRequests(requests -> {
+                    requests.requestMatchers(HttpMethod.POST, "/api/v1/users/signin", "/api/v1/users/create").permitAll();
+                            //Users
+                    requests.requestMatchers(HttpMethod.GET, "/api/v1/users/all").hasRole(admin);
+                    requests.requestMatchers(HttpMethod.GET, "/api/v1/users/user/{userId}").hasAnyRole(admin, user);
+                    requests.requestMatchers(HttpMethod.PUT, "/api/v1/users/{id}/update").hasAnyRole(admin, user);
+                    requests.requestMatchers(HttpMethod.DELETE, "/api/v1/users/{id}/delete").hasAnyRole(admin, user);
+                            //Posts
+                    requests.requestMatchers(HttpMethod.GET, "/api/v1/posts/all", "/api/v1/posts/{postId}", "/api/v1/posts/author/{authorId}").permitAll();
+                    requests.requestMatchers(HttpMethod.POST, "/api/v1/posts/create", "/api/v1/posts/{postId}/like/{userId}").hasAnyRole(admin, user);
+                    requests.requestMatchers(HttpMethod.POST, "/api/v1/{postId}/like/{userId}").hasAnyRole(admin, user);
+                    requests.requestMatchers(HttpMethod.PUT, "/api/v1/posts/{postId}/update/{userId}").hasAnyRole(admin, user);
+                    requests.requestMatchers(HttpMethod.DELETE, "/api/v1/posts/{postId}/delete/{userId}").hasAnyRole(admin, user);
+                            //Reviews
+                    requests.requestMatchers(HttpMethod.GET, "/api/v1/reviews/all/{postId}").permitAll();
+                    requests.requestMatchers(HttpMethod.GET, "/api/v1/reviews/review/{reviewId}").hasAnyRole(admin, user);
+                    requests.requestMatchers(HttpMethod.POST, "/api/v1/reviews/create/review/{postId}").hasAnyRole(admin, user);
+                    requests.requestMatchers(HttpMethod.PUT, "/api/v1/reviews/{postId}/update/{reviewId}/{userId}").hasAnyRole(admin, user);
+                    requests.requestMatchers(HttpMethod.DELETE, "/api/v1/reviews/{postId}/delete/{reviewId}/{userId}").hasAnyRole(admin, user);
+                    requests.anyRequest().authenticated();
+                        }
                 );
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
