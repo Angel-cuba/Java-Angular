@@ -104,8 +104,8 @@ public class PostService {
         return helpers.responseWithData("Post created successfully", HttpStatus.CREATED, savedPost.getId());
     }
 
-    public ResponseEntity<Map<String, Object>> updatePost(@PathVariable ObjectId id, @PathVariable String userId, @RequestBody PostUpdateRequest post) {
-        Optional<Post> postToUpdate = postRepository.findById(id);
+    public ResponseEntity<Map<String, Object>> updatePost(@PathVariable ObjectId postId, @PathVariable String userId, @RequestBody PostUpdateRequest post) {
+        Optional<Post> postToUpdate = postRepository.findById(postId);
         String authorId;
 
         if (postToUpdate.isEmpty()) {
@@ -132,11 +132,11 @@ public class PostService {
         return helpers.responseWithData("Post updated successfully", HttpStatus.OK, updatedPost);
     }
 
-    public ResponseEntity<Map<String, Object>> deletePost(@PathVariable ObjectId id, @PathVariable String userId) {
-        Optional<Post> postToDelete = postRepository.findById(id);
+    public ResponseEntity<Map<String, Object>> deletePost(@PathVariable ObjectId postId, @PathVariable String userId) {
+        Optional<Post> postToDelete = postRepository.findById(postId);
         String authorId = "";
 
-        if (!postRepository.existsById(id)) {
+        if (!postRepository.existsById(postId)) {
             return helpers.response(notFound, HttpStatus.NOT_FOUND);
         }
         if (postToDelete.isPresent()) {
@@ -146,7 +146,7 @@ public class PostService {
             return helpers.response("You are not authorized to delete this post", HttpStatus.UNAUTHORIZED);
         }
 
-        postRepository.deleteById(id);
+        postRepository.deleteById(postId);
         return helpers.response("Post deleted successfully", HttpStatus.OK);
     }
 }

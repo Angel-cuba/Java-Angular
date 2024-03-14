@@ -48,12 +48,12 @@ public class PostController {
     }
 
     @PutMapping("/{postId}/update/{userId}")
-    public ResponseEntity<Map<String, Object>> updatePost(@PathVariable ObjectId id, @PathVariable String userId, @RequestBody PostUpdateRequest post) {
-        return postService.updatePost(id, userId, post);
+    public ResponseEntity<Map<String, Object>> updatePost(@PathVariable ObjectId postId, @PathVariable String userId, @RequestBody PostUpdateRequest post) {
+        return postService.updatePost(postId, userId, post);
     }
 
     @DeleteMapping("/{postId}/delete/{userId}")
-    public ResponseEntity<Map<String, Object>> deletePost(@PathVariable ObjectId id, @PathVariable String userId) {
-        return postService.deletePost(id, userId);
+    public ResponseEntity<Map<String, Object>> deletePost(@PathVariable ObjectId postId, @PathVariable String userId) {
+        return postService.deletePost(postId, userId);
     }
 }
