@@ -1,0 +1,20 @@
+
+b	java:S1123"FDefine and throw a dedicated exception instead of using a generic one.(¡ªîÀ8˜¦êéÛ1
+g	java:S112,"FDefine and throw a dedicated exception instead of using a generic one.(‚¢‡Äüÿÿÿÿ8˜¦êéÛ1
+g	java:S112="FDefine and throw a dedicated exception instead of using a generic one.(âÀšÊüÿÿÿÿ8˜¦êéÛ1
+a	java:S112J"FDefine and throw a dedicated exception instead of using a generic one.(’çf8˜¦êéÛ1
+b	java:S112O"FDefine and throw a dedicated exception instead of using a generic one.(ŠÏøô8©êõéÛ1
+J
+java:S5411I"(Use a primitive boolean expression here.(ìêÄ·ùÿÿÿÿ8™¦êéÛ1
+C
+java:S1170"!Make this final field static too.(„ó¿¢şÿÿÿÿ8¢¦êéÛ1
+X
+java:S6437 "6Revoke and change this password, as it is compromised.(´²­úÿÿÿÿ8¥¦êéÛ1
+R
+java:S1874 "0Remove this use of "signWith"; it is deprecated.(´²­úÿÿÿÿ8¦¦êéÛ1
+X
+java:S64379"6Revoke and change this password, as it is compromised.(¯éºæıÿÿÿÿ8©¦êéÛ1
+P
+java:S18749".Remove this use of "parser"; it is deprecated.(¯éºæıÿÿÿÿ8©¦êéÛ1
+W
+java:S18749"5Remove this use of "setSigningKey"; it is deprecated.(¯éºæıÿÿÿÿ8©¦êéÛ1

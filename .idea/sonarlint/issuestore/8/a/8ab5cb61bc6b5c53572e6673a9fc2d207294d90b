@@ -1,0 +1,20 @@
+
+h
+java:S11920"FDefine a constant instead of duplicating this literal "ADMIN" 7 times.(Ÿûåÿÿÿÿÿ8“ƒÄÙ1
+v	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(””æ„8äğÃÙ1
+_
+java:S6813"BRemove this field injection and use constructor injection instead.(êæÄŞ8‘äğÃÙ1
+t
+java:S3305"RInject this field value directly into "filterChain", the only method that uses it.(£šÈÙûÿÿÿÿ8üœ†ÄÙ1
+j
+java:S5738$"HRemove this call to a deprecated method, it has been marked for removal.(¡ŠÆøÿÿÿÿ8œƒÄÙ1
+j
+java:S5738%"HRemove this call to a deprecated method, it has been marked for removal.(Åúßµûÿÿÿÿ8œƒÄÙ1
+j
+java:S5738&"HRemove this call to a deprecated method, it has been marked for removal.(ÊìÛ¯şÿÿÿÿ8œƒÄÙ1
+e
+java:S5738)"HRemove this call to a deprecated method, it has been marked for removal.(×íÑø8œƒÄÙ1
+j
+java:S5738+"HRemove this call to a deprecated method, it has been marked for removal.(«õÀ¤şÿÿÿÿ8ƒÄÙ1
+e
+java:S5738-"HRemove this call to a deprecated method, it has been marked for removal.(â†ÕÈ8ƒÄÙ1

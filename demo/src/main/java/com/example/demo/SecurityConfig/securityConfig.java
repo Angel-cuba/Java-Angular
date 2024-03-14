@@ -52,7 +52,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
                             //Posts
                     requests.requestMatchers(HttpMethod.GET, "/api/v1/posts/all", "/api/v1/posts/{postId}", "/api/v1/posts/author/{authorId}").permitAll();
                     requests.requestMatchers(HttpMethod.POST, "/api/v1/posts/create", "/api/v1/posts/{postId}/like/{userId}").hasAnyRole(admin, user);
-                    requests.requestMatchers(HttpMethod.POST, "/api/v1/{postId}/like/{userId}").hasAnyRole(admin, user);
                     requests.requestMatchers(HttpMethod.PUT, "/api/v1/posts/{postId}/update/{userId}").hasAnyRole(admin, user);
                     requests.requestMatchers(HttpMethod.DELETE, "/api/v1/posts/{postId}/delete/{userId}").hasAnyRole(admin, user);
                             //Reviews
